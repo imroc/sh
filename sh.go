@@ -8,7 +8,8 @@ import (
 )
 
 // Run just execute the script.
-func Run(script string) error {
+func Run(script string, a ...interface{}) error {
+	script = fmt.Sprintf(script, a...)
 	return exec.Command("sh", "-c", script).Run()
 }
 
