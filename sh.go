@@ -1,6 +1,7 @@
 package sh
 
 import (
+	"fmt"
 	"os/exec"
 	"strconv"
 	"strings"
@@ -12,13 +13,14 @@ func Run(script string) error {
 }
 
 // Output execute the script, and receive the output as []byte.
-func Output(script string) ([]byte, error) {
+func Output(script string, a ...interface{}) ([]byte, error) {
+	script = fmt.Sprintf(script, a...)
 	return exec.Command("sh", "-c", script).Output()
 }
 
 // String execute the script, and receive the output as string.
-func String(script string) (result string, err error) {
-	bs, err := Output(script)
+func String(script string, a ...interface{}) (result string, err error) {
+	bs, err := Output(script, a...)
 	if err != nil {
 		return
 	}
