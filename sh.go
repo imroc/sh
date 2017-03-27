@@ -18,6 +18,15 @@ func Output(script string, a ...interface{}) ([]byte, error) {
 	return exec.Command("sh", "-c", script).Output()
 }
 
+// MustOutput execute the script, receive the output as []byte, panic if error happens.
+func MustOutput(script string, a ...interface{}) []byte {
+	ret, err := Output(script, a...)
+	if err != nil {
+		panic(err)
+	}
+	return ret
+}
+
 // String execute the script, and receive the output as string.
 func String(script string, a ...interface{}) (result string, err error) {
 	bs, err := Output(script, a...)
@@ -28,13 +37,31 @@ func String(script string, a ...interface{}) (result string, err error) {
 	return
 }
 
+// MustString execute the script, receive the output as string. panic if error happens.
+func MustString(script string, a ...interface{}) string {
+	str, err := String(script, a...)
+	if err != nil {
+		panic(err)
+	}
+	return str
+}
+
 // Int execute the script, and receive the output as int.
-func Int(script string) (result int, err error) {
-	s, err := String(script)
+func Int(script string, a ...interface{}) (result int, err error) {
+	s, err := String(script, a...)
 	if err != nil {
 		return
 	}
 	s = strings.TrimSpace(s)
 	result, err = strconv.Atoi(s)
 	return
+}
+
+// MustInt execute the script, receive the output as int, panic if error happens.
+func MustInt(script string, a ...interface{}) int {
+	i, err := Int(script, a...)
+	if err != nil {
+		panic(err)
+	}
+	return i
 }
